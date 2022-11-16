@@ -1,0 +1,37 @@
+table {
+  border-collapse: collapse;
+  min-width: calc(100vw - 20px);
+}
+
+.use-tooling-api,
+.action {
+  text-align: center;
+}
+
+.scrolltable-cell {
+  min-width: 50px;
+  max-width: calc(100vw - 450px);
+  padding: 4px;
+  word-break: break-all;
+  border: 1px solid gray;
+  overflow: auto;
+  /* padding: 0 1px; */
+  background-color: white;
+  vertical-align: top;
+  white-space: pre;
+  box-sizing: border-box;
+}
+
+a {
+  padding: 5px;
+  color: rgb(0, 0, 0);
+}
+
+.search {
+  margin-bottom: 10px;
+}
+
+.search input {
+  min-width: 400px;
+  height: 1.5rem;
+}

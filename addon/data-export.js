@@ -3,58 +3,7 @@ import {sfConn, apiVersion} from "./inspector.js";
 /* global initButton */
 import {Enumerable, DescribeInfo, copyToClipboard, initScrollTable} from "./data-load.js";
 
-class QueryHistory {
-  constructor(storageKey, max) {
-    this.storageKey = storageKey;
-    this.max = max;
-    this.list = this._get();
-  }
-
-  _get() {
-    let history;
-    try {
-      history = JSON.parse(localStorage[this.storageKey]);
-    } catch (e) {
-      // empty
-    }
-    if (!Array.isArray(history)) {
-      history = [];
-    }
-    // A previous version stored just strings. Skip entries from that to avoid errors.
-    history = history.filter(e => typeof e == "object");
-    return history;
-  }
-
-  add(entry) {
-    let history = this._get();
-    let historyIndex = history.findIndex(e => e.query == entry.query && e.useToolingApi == entry.useToolingApi);
-    if (historyIndex > -1) {
-      history.splice(historyIndex, 1);
-    }
-    history.splice(0, 0, entry);
-    if (history.length > this.max) {
-      history.pop();
-    }
-    localStorage[this.storageKey] = JSON.stringify(history);
-    this.list = history;
-  }
-
-  remove(entry) {
-    let history = this._get();
-    let historyIndex = history.findIndex(e => e.query == entry.query && e.useToolingApi == entry.useToolingApi);
-    if (historyIndex > -1) {
-      history.splice(historyIndex, 1);
-    }
-    localStorage[this.storageKey] = JSON.stringify(history);
-    this.list = history;
-  }
-
-  clear() {
-    localStorage.removeItem(this.storageKey);
-    this.list = [];
-  }
-
-}
+import {QueryHistory} from './query-history.js';
 
 class Model {
   constructor({sfHost, args}) {
@@ -153,14 +102,14 @@ class Model {
       this.queryInput.value = this.selectedSavedEntry.query;
       this.queryTooling = this.selectedSavedEntry.useToolingApi;
       this.queryAutocompleteHandler();
-      this.selectedSavedEntry = null;
+      // this.selectedSavedEntry = null;
     }
   }
   clearSavedHistory() {
     this.savedHistory.clear();
   }
-  addToHistory() {
-    this.savedHistory.add({query: this.queryInput.value, useToolingApi: this.queryTooling});
+  addToHistory(name) {
+    this.savedHistory.add({query: this.queryInput.value, useToolingApi: this.queryTooling, name});
   }
   removeFromHistory() {
     this.savedHistory.remove({query: this.queryInput.value, useToolingApi: this.queryTooling});
@@ -862,6 +811,7 @@ class App extends React.Component {
     this.onCopyAsJson = this.onCopyAsJson.bind(this);
     this.onResultsFilterInput = this.onResultsFilterInput.bind(this);
     this.onStopExport = this.onStopExport.bind(this);
+    this.onToggleExpandQueryPane = this.onToggleExpandQueryPane.bind(this);
   }
   onQueryAllChange(e) {
     let {model} = this.props;
@@ -895,8 +845,13 @@ class App extends React.Component {
   onAddToHistory(e) {
     e.preventDefault();
     let {model} = this.props;
-    model.addToHistory();
-    model.didUpdate();
+    const name = prompt("Enter name for query");
+    if (name) {
+      model.addToHistory(name);
+      // model.selectedSavedEntry = { query: this.queryInput.value, useToolingApi: this.queryTooling, name };
+      // this.selectSavedEntry();
+      model.didUpdate();
+    }
   }
   onRemoveFromHistory(e) {
     e.preventDefault();
@@ -915,6 +870,16 @@ class App extends React.Component {
     let {model} = this.props;
     model.toggleHelp();
     model.didUpdate();
+  }
+  onToggleExpandQueryPane(e) {
+    e.preventDefault();
+    let {model} = this.props;
+    const queryInput = this.refs.query;
+    if (queryInput.clientHeight <= 53) {
+      queryInput.style.height = '500px';
+    } else {
+      queryInput.style.height = '53px';
+    }
   }
   onToggleExpand(e) {
     e.preventDefault();
@@ -1049,14 +1014,18 @@ class App extends React.Component {
           h("a", {href: "about:blank", onClick: this.onClearHistory, title: "Clear query history", className: "char-btn"}, "X")
         ),
         h("label", {},
-          h("select", {value: JSON.stringify(model.selectedSavedEntry), onChange: this.onSelectSavedEntry, className: "query-history"},
-            h("option", {value: JSON.stringify(null)}, "Saved queries"),
-            model.savedHistory.list.map(q => h("option", {key: JSON.stringify(q), value: JSON.stringify(q)}, q.query.substring(0, 300)))
+          h("select", {value: JSON.stringify(model.selectedSavedEntry), onChange: this.onSelectSavedEntry, className: "saved-query-history"},
+            h("option", { value: JSON.stringify(null) }, "Saved queries"),
+            model.savedHistory.list.map(q => h("option", { key: JSON.stringify(q), value: JSON.stringify(q), selected: (model.selectedSavedEntry && (model.selectedSavedEntry.query == q.query))}, q.name ? q.name: q.query.substring(0,300)))
           ),
           h("a", {href: "about:blank", onClick: this.onAddToHistory, title: "Add query to saved history", className: "char-btn"}, "+"),
           h("a", {href: "about:blank", onClick: this.onRemoveFromHistory, title: "Remove query from saved history", className: "char-btn"}, "X"),
           h("a", {href: "about:blank", onClick: this.onClearSavedHistory, title: "Clear saved history", className: "char-btn"}, "XX")
         ),
+        h("label", {},
+          h("a", {href: "manage-query.html", target: "manage_query", title: "Manage Query"}, "Manage Query")
+        ),
+        h("a", { href: "about:blank", id: "expand-collapse-btn", onClick: this.onToggleExpandQueryPane, style: {paddingLeft: "10px"}}, "Expand/Collapse"),
         h("a", {href: "about:blank", id: "export-help-btn", onClick: this.onToggleHelp}, "Export help"),
         h("textarea", {id: "query", ref: "query", style: {maxHeight: (model.winInnerHeight - 200) + "px"}}),
         h("div", {className: "autocomplete-box" + (model.expandAutocomplete ? " expanded" : "")},

@@ -5,12 +5,17 @@
     "firefox-dev-build": "node scripts/dev-build.js firefox",
     "chrome-dev-build": "node scripts/dev-build.js chrome",
     "firefox-release-build": "node scripts/release-build.js firefox",
-    "chrome-release-build": "node scripts/release-build.js chrome"
+    "chrome-release-build": "node scripts/release-build.js chrome",
+    "dev": "npx babel --watch src --out-dir addon --presets react-app/prod"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "eslint": "^6.3.0",
     "fs-extra": "2.0.0",
     "replace-in-file": "2.2.2",
     "zip-dir": "1.0.2"
+  },
+  "dependencies": {
+    "babel-preset-react-app": "^3.1.2"
   }
 }

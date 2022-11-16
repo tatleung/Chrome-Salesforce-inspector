@@ -14,6 +14,9 @@ body {
   overflow: hidden;
   margin-top: 0;
 }
+a {
+  color: rgb(0,0,0)
+}
 #user-info {
   background-color: #1797c0;
   color: white;
@@ -115,6 +118,9 @@ h1 {
 }
 .query-history {
   width: 9em;
+}
+.saved-query-history {
+  width: 18em;
 }
 #export-help-btn {
   float: right;

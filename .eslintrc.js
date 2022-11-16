@@ -9,7 +9,7 @@ module.exports = {
     "sourceType": "module"
   },
   "root": true,
-  "extends": "eslint:recommended",
+  "extends": ["eslint:recommended", "react-app", "babel-preset-react-app"],
   "overrides": [
     {
       "parserOptions": {
@@ -31,8 +31,8 @@ module.exports = {
     }
   ],
   "rules": {
-    "indent": ["error", 2, {"SwitchCase": 1, "flatTernaryExpressions": true}],
-    "quotes": ["error", "double", {"avoidEscape": true}],
+    "indent": ["error", 2, { "SwitchCase": 1, "flatTernaryExpressions": true }],
+    "quotes": ["error", "double", { "avoidEscape": true }],
     "semi": ["error", "always"],
     "strict": ["error", "global"],
     "consistent-return": "error",
@@ -41,14 +41,14 @@ module.exports = {
     "no-multi-spaces": "error",
     "array-bracket-spacing": "error",
     "block-spacing": "error",
-    "brace-style": ["error", "1tbs", {"allowSingleLine": true}],
+    "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
     "camelcase": "error",
     "comma-dangle": ["error", "only-multiline"],
     "comma-spacing": "error",
     "comma-style": "error",
     "computed-property-spacing": "error",
     "consistent-this": ["error", "self"],
-    "eol-last": "error",
+    // "eol-last": "error",
     "func-call-spacing": "error",
     "key-spacing": "error",
     "keyword-spacing": "error",
@@ -59,10 +59,10 @@ module.exports = {
     "no-new-object": "error",
     "no-tabs": "error",
     "no-trailing-spaces": "error",
-    "no-underscore-dangle": ["error", {"allowAfterThis": true, "allowAfterSuper": true}],
+    "no-underscore-dangle": ["error", { "allowAfterThis": true, "allowAfterSuper": true }],
     "no-whitespace-before-property": "error",
     "object-curly-spacing": "error",
-    "object-property-newline": ["error", {"allowMultiplePropertiesPerLine": true}],
+    "object-property-newline": ["error", { "allowMultiplePropertiesPerLine": true }],
     "one-var-declaration-per-line": "error",
     "operator-linebreak": ["error", "before"],
     "semi-spacing": "error",
@@ -81,7 +81,7 @@ module.exports = {
     "no-useless-constructor": "error",
     "no-var": "error",
     "object-shorthand": "error",
-    "prefer-arrow-callback": ["error", {"allowNamedFunctions": true}],
+    "prefer-arrow-callback": ["error", { "allowNamedFunctions": true }],
     "prefer-numeric-literals": "error",
     "prefer-rest-params": "error",
     "prefer-spread": "error",
