@@ -50,11 +50,19 @@ export default function QueryManager(props) {
 
   return (
     <div>
+      <div id="user-info">
+        <a href="#" className="sf-link">
+          <svg view-box="0 0 24 24">
+            <path d="M18.9 12.3h-1.5v6.6c0 .2-.1.3-.3.3h-3c-.2 0-.3-.1-.3-.3v-5.1h-3.6v5.1c0 .2-.1.3-.3.3h-3c-.2 0-.3-.1-.3-.3v-6.6H5.1c-.1 0-.3-.1-.3-.2s0-.2.1-.3l6.9-7c.1-.1.3-.1.4 0l7 7v.3c0 .1-.2.2-.3.2z" />
+          </svg>
+          Manage Query
+        </a>
+      </div>
       <div className="search">
         <input
           type="text"
           ref={searchRef}
-          placeholder="Enter search criteria"
+          placeholder="Enter filter (regex accepted, eg: account|contract)"
           onKeyUp={applyFilter}
         ></input>
       </div>
@@ -84,7 +92,7 @@ export default function QueryManager(props) {
                     {q.name ? q.name : "Unnamed"}
                   </td>
                   <td
-                    className="scrolltable-cell"
+                    className="scrolltable-cell query"
                     onDoubleClick={(event) => copyQuery(idx, event)}
                     title="Double-click cell to copy query."
                   >

@@ -1,7 +1,16 @@
+body {
+  overflow: scroll !important;
+}
+
 table {
   border-collapse: collapse;
   min-width: calc(100vw - 20px);
 }
+
+/* tbody {
+  height: 500px !important;
+  overflow: scroll;
+} */
 
 .use-tooling-api,
 .action {
@@ -10,16 +19,20 @@ table {
 
 .scrolltable-cell {
   min-width: 50px;
-  max-width: calc(100vw - 450px);
   padding: 4px;
-  word-break: break-all;
+  word-wrap: normal;
+  /* word-break: break-all; */
   border: 1px solid gray;
   overflow: auto;
   /* padding: 0 1px; */
-  background-color: white;
+  /* background-color: white; */
   vertical-align: top;
-  white-space: pre;
   box-sizing: border-box;
+}
+
+.query {
+  max-width: calc(100vw - 450px);
+  white-space: pre;
 }
 
 a {
@@ -29,9 +42,28 @@ a {
 
 .search {
   margin-bottom: 10px;
+  text-align: center;
 }
 
 .search input {
   min-width: 400px;
   height: 1.5rem;
+}
+
+#user-info {
+  background-color: #1797c0;
+  color: white;
+  padding: 0 1em;
+  border-radius: 0 0 10px 10px;
+  margin-bottom: 8px;
+}
+.sf-link {
+  background-color: rgb(6, 28, 63);
+  border-radius: 3px;
+  line-height: 2em;
+  text-decoration: none;
+  display: inline-block;
+  padding: 2px;
+  color: white;
+  padding-right: 1em;
 }
